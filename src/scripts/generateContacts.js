@@ -1,3 +1,3 @@
-const generateContacts = async (number) => {};
+export const generateContacts = async (number) => {};
 
 generateContacts(5);
