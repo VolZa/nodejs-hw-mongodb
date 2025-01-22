@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { env } from '../utils/env.js';
 
-export const initMongoDB= async () => {
+export const initMongoConnection= async () => {
     try {
         const user = env('MONGODB_USER');
         const password = env('MONGODB_PASSWORD');
@@ -13,7 +13,7 @@ export const initMongoDB= async () => {
         );
         console.log('Mongo connection successfully established!');
     } catch (error) {
-        console.log('Error while setting up mongo connection', error);
+        console.log('Error while setting up mongo connection xx', error);
         throw error;
     }
 };
