@@ -8,3 +8,5 @@ export const getAllContacts = () => ContactsCollection.find();
 // };
 
 export const getContactById = (contactId) => ContactsCollection.findById(contactId);
+
+export const delContactById = (contactId) => ContactsCollection.findByIdAndDelete(contactId);
