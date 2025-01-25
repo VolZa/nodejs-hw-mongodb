@@ -2,6 +2,7 @@ import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
 import dotenv from "dotenv";
+
 import contactsRouter from './routers/contacts.js';
 import { env } from './utils/env.js';
 
@@ -53,14 +54,6 @@ export const startServer = () => {
     });
 
 };
-
-// export default { app, startServer };
-
-
-// app.use((req, res, next) => {
-//   console.log(`Time: ${new Date().toLocaleString()}`);
-//   next();
-// });
 
 
 
