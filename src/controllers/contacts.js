@@ -43,11 +43,14 @@ export const createContactController = async (req, res) => {
     });
 };
 
-export const delContactByIdController = async (req, res) => {
+export const delContactByIdController = async (req, res, next) => {
     const { contactId } = req.params;
 
-    await delContactById(contactId);
-
+    const result = await delContactById(contactId);
+    if (!result) {
+        next(createHttpError(404, 'Contact not found'));       
+        return;
+    }
     res.status(204).send();
 };
 
