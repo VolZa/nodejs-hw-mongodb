@@ -35,7 +35,7 @@ export const startServer = () => {
         });  
     });
 
-    app.use(contactsRouter);
+    app.use('/contacts', contactsRouter);
 
     // app.use('*', (req, res, next) => {
     //     res.status(404).json({
