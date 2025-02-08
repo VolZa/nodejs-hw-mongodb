@@ -3,8 +3,6 @@ import { createContact, delContactById, getAllContacts, getContactById, updateCo
 import { parseFilters } from "../utils/parseFilter.js";
 import { parsePaginationParams } from "../utils/parsePaginationParams.js";
 import { parseSortParams } from "../utils/parseSortParams.js";
-// import { createContactSchema } from "../validation/contacts.js";
-//import { validationResult } from "../validation/contacts.js";
 
 export const getContactsController = async (req,res) => {
     const {page, perPage} = parsePaginationParams(req.query);
