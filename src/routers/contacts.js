@@ -6,7 +6,7 @@ import { createContactController, delContactByIdController, getContactByIdContro
         upsertContactController} from '../controllers/contacts.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
-// import {validateBody} from '../middlewares/validateBody.js';
+import {validateBody} from '../middlewares/validateBody.js';
 import {isValidId} from '../middlewares/isValidId.js';
 
 //updateContactSchema 
