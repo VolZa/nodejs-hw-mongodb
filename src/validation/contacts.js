@@ -19,7 +19,7 @@ const dataToValidate = {
     contactType: 'home'
 };
 
-export const validationResult = createContactShcema.validate(dataToValidate, abortEarly: false,);
+export const validationResult = createContactShcema.validate(dataToValidate, {abortEarly: false},);
 
 if (validationResult.error) {
     console.error(validationResult.error.message);
