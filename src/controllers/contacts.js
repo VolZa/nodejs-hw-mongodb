@@ -45,10 +45,9 @@ export const createContactController = async (req, res) => {
 
 export const delContactByIdController = async (req, res, next) => {
     const { contactId } = req.params;
-    console.log('Контролер- Ід контакта ' + contactId);
     const result = await delContactById(contactId);
     if (!result) {
-        next(createHttpError(404,  `Contact  not found`));       
+        next(createHttpError(404,  'Contact  not found'));       
         return;
     }
     res.status(204).send();

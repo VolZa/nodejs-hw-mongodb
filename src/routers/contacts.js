@@ -29,11 +29,11 @@ contactsRouter.delete('/:contactId',
         ctrlWrapper(delContactByIdController));
 contactsRouter.put('/:contactId', 
         isValidId,
-        validateBody(createContactShcema),
+        validateBody(updateContactValidationShema),
         ctrlWrapper(upsertContactController));
 contactsRouter.patch('/:contactId',
         isValidId,
-         validateBody(updateContactValidationShema), 
+         validateBody(createContactShcema), 
         ctrlWrapper(patchContactController));
 
 export default contactsRouter;
