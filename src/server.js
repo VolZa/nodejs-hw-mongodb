@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 
 // import contactsRouter from './routers/contacts.js';
 import router from './routers/index.js';
-import contactsRouter from './routers/contacts.js';
+// import contactsRouter from './routers/contacts.js';
 
 import { env } from './utils/env.js';
 import { errorHandler } from './middlewares/errorHandler.js';
@@ -39,8 +39,8 @@ export const startServer = () => {
     });
 
     // app.use(contactsRouter);
-  // app.use(router);
-   app.use('/contacts', contactsRouter);
+  app.use(router);
+  //  app.use('/contacts', contactsRouter);
 
     // app.use('*', (req, res, next) => {
     //     res.status(404).json({
