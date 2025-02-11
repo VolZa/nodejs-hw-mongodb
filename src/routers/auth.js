@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { registerUserSchema } from "../validation/auth.js";
+import { loginUserSchema, registerUserSchema } from "../validation/auth.js";
 import { ctrlWrapper } from "../utils/ctrlWrapper.js";
-import { registerUserController } from "../controllers/auth.js";
+import { loginUserController, registerUserController } from "../controllers/auth.js";
 
 //'../middlewares/validateBody.js'
 import { validateBody } from '../middlewares/validateBody.js';
@@ -15,7 +15,9 @@ router.post(
 );
 
 router.post(
-    '/login'
+    '/login',
+    validateBody(loginUserSchema),
+    ctrlWrapper(loginUserController),
 );
 
 router.post('/refresh-session');
