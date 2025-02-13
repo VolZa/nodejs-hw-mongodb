@@ -33,7 +33,7 @@ contactsRouter.put('/:contactId',
         ctrlWrapper(upsertContactController));
 contactsRouter.patch('/:contactId',
         isValidId,
-         validateBody(createContactShcema), 
+        validateBody(createContactShcema), 
         ctrlWrapper(patchContactController));
 
 export default contactsRouter;
