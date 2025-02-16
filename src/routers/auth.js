@@ -23,7 +23,7 @@ router.post(
     ctrlWrapper(loginUserController),
 );
 
-router.post('/refresh-session',
+router.post('/refresh',
     ctrlWrapper(refreshUserSessionController)
 );
 

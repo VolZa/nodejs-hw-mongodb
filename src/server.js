@@ -40,6 +40,7 @@ export const startServer = () => {
     });  
   });
 
+
     // app.use(contactsRouter);
   app.use(router);
   //  app.use('/contacts', contactsRouter);
@@ -59,7 +60,8 @@ export const startServer = () => {
     app.use('*', notFoundHandler);
     app.use(errorHandler);
 
-    app.listen(PORT, () => {
+  app.listen(PORT, () => {
+    // console.log(process.env);
         console.log(`Server is running on port ${PORT}`);
 
     });
