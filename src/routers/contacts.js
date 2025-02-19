@@ -30,9 +30,10 @@ contactsRouter.post('/',
 contactsRouter.delete('/:contactId',
         isValidId,
         ctrlWrapper(delContactByIdController));
+//updateContactValidationShema        
 contactsRouter.put('/:contactId', 
         isValidId,
-        validateBody(updateContactValidationShema),
+        validateBody(createContactShcema),
         ctrlWrapper(upsertContactController));
 contactsRouter.patch('/:contactId',
         isValidId,
