@@ -1,18 +1,42 @@
 import {Router} from 'express';
 
-import { createContactController, delContactByIdController, getContactByIdController, 
+import {
+        createContactController, delContactByIdController,
+        getContactByIdController, 
         getContactsController, 
         patchContactController, 
         upsertContactController} from '../controllers/contacts.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
+import {validateBody} from '../middlewares/validateBody.js';
+import {isValidId} from '../middlewares/isValidId.js';
+
+import { createContactShcema } from '../validation/contacts.js';
+import { updateContactValidationShema } from '../validation/updateContactValidationSchema.js';
+import { authenticate } from '../middlewares/authenticate.js';
+
 const contactsRouter = Router();
 
-contactsRouter.get('/contacts', ctrlWrapper(getContactsController));
-contactsRouter.get('/contacts/:contactId', ctrlWrapper(getContactByIdController));
-contactsRouter.post('/contacts', ctrlWrapper(createContactController));
-contactsRouter.delete('/contacts/:contactId', ctrlWrapper(delContactByIdController));
-contactsRouter.put('/contacts/:contactId', ctrlWrapper(upsertContactController));
-contactsRouter.patch('/contacts/:contactId', ctrlWrapper(patchContactController));
+contactsRouter.use(authenticate);
+
+contactsRouter.get('/', 
+        ctrlWrapper(getContactsController));
+contactsRouter.get('/:contactId', 
+        isValidId, 
+        ctrlWrapper(getContactByIdController));
+contactsRouter.post('/', 
+        validateBody(createContactShcema),
+        ctrlWrapper(createContactController));
+contactsRouter.delete('/:contactId',
+        isValidId,
+        ctrlWrapper(delContactByIdController));
+contactsRouter.put('/:contactId', 
+        isValidId,
+        validateBody(updateContactValidationShema),
+        ctrlWrapper(upsertContactController));
+contactsRouter.patch('/:contactId',
+        isValidId,
+        validateBody(createContactShcema), 
+        ctrlWrapper(patchContactController));
 
 export default contactsRouter;
