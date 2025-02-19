@@ -1,10 +1,8 @@
 import globals from 'globals';
 import pluginJs from '@eslint/js';
-import eslintPluginPrettier from 'eslint-plugin-prettier/recomended';
 
 export default [
   pluginJs.configs.recommended,
-  eslintPluginPrettier,
   {
     files: ['src/**/*.js'],
     languageOptions: { globals: globals.node },
