@@ -4,6 +4,10 @@ import { randomBytes } from 'crypto';
 import { UsersCollection } from "../db/models/User.js";
 import { FIFTEEN_MINUTES, THIRTY_DAY } from '../constants/index.js';
 import { SessionsCollection } from '../db/models/session.js';
+import { send } from 'process';
+import { get } from 'http';
+import { ENV_VARS } from '../constants/env.js';
+import { sendEmail } from '../utils/sendEmail.js';
 
 export const registerUser = async (payload) => {
     const user = await UsersCollection.findOne({ email: payload.email });
@@ -76,5 +80,17 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
     return await SessionsCollection.create({
         userId: session.userId,
         ...newSession,
+    });
+};
+
+export const sendResetPasswordEmail = async (email) => { 
+    const user = await UsersCollection.findOne({ email });
+    if (!user) { throw createHttpError(404, 'User not found'); };
+    sendEmail({
+        to: email,
+        from: getEnv(ENV_VARS.SMTP_FROM),
+        subject: 'Reset Password',
+        html: `<a href="http://localhost:3000/reset-password/${user._id}">Reset Password</a>`,
+
     });
 };

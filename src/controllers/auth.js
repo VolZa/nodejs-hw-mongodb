@@ -4,6 +4,9 @@ import {
 } from "../services/auth.js";
 import { serializeUser } from "../utils/serializeUser.js";
 import { THIRTY_DAY } from "../constants/index.js";
+import  pkg from "joi";
+
+const { data } = pkg;
 
 export const registerUserController = async(req, res) => {
     const { body } = req;
@@ -70,4 +73,18 @@ export const refreshUserSessionController = async (req, res) => {
         message: 'Successfully refreshed a session!',
         data: { accessToken: session.accessToken, },
     });
+};
+
+export const sendResetEmailController = async (req, res) => {
+    const { email } = req.body;
+    await sendResetPasswordEmail(email);
+    res.json({
+        status: 200,
+        message: 'Successfully sent reset password email!',
+        data: { email },
+    });
+};
+
+export const resetPasswordController = async (req, res) => {
+    res.send('resetPasswordController');
 };
