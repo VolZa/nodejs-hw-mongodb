@@ -1,90 +1,95 @@
+import jwt from 'jsonwebtoken';
 import {
-    loginUser, logoutUser,
-    refreshUsersSession, registerUser
-} from "../services/auth.js";
-import { serializeUser } from "../utils/serializeUser.js";
-import { THIRTY_DAY } from "../constants/index.js";
-import  pkg from "joi";
+  loginUser,
+  logoutUser,
+  refreshUsersSession,
+  registerUser,
+  sendResetPasswordEmail,
+} from '../services/auth.js';
+import { serializeUser } from '../utils/serializeUser.js';
+import { THIRTY_DAY } from '../constants/index.js';
+import pkg from 'joi';
 
 const { data } = pkg;
 
-export const registerUserController = async(req, res) => {
-    const { body } = req;
-    const user = await registerUser(body);
-    
-    res.status(201).json({
-        status: 201,
-        message: 'Successfully registered a user!',
-        data: serializeUser(user),
-    });
+export const registerUserController = async (req, res) => {
+  const { body } = req;
+  const user = await registerUser(body);
+
+  res.status(201).json({
+    status: 201,
+    message: 'Successfully registered a user!',
+    data: serializeUser(user),
+  });
 };
 
 export const loginUserController = async (req, res) => {
-    const session = await loginUser(req.body);
-    res.cookie('refreshToken', session.refreshToken, {
-        httpOnly: true,
-        expires: new Date(Date.now() + THIRTY_DAY),
-    });
-    res.cookie('sessionId', session._id, {
-        httpOnly: true,
-        expires: new Date(Date.now() + THIRTY_DAY),
-    });
+  const session = await loginUser(req.body);
+  res.cookie('refreshToken', session.refreshToken, {
+    httpOnly: true,
+    expires: new Date(Date.now() + THIRTY_DAY),
+  });
+  res.cookie('sessionId', session._id, {
+    httpOnly: true,
+    expires: new Date(Date.now() + THIRTY_DAY),
+  });
 
-    res.json({
-        status: 200,
-        message: 'Successfully logger in an user!',
-        data: {
-            accessToken: session.accessToken,
-        },
-    });
+  res.json({
+    status: 200,
+    message: 'Successfully logger in an user!',
+    data: {
+      accessToken: session.accessToken,
+    },
+  });
 };
 
 export const logoutUserController = async (req, res) => {
-    if (req.cookies.sessionId) {
-        await logoutUser(req.cookies.sessionId);
-    };
-    res.clearCookie('sessionId');
-    res.clearCookie('refreshToken');
+  if (req.cookies.sessionId) {
+    await logoutUser(req.cookies.sessionId);
+  }
+  res.clearCookie('sessionId');
+  res.clearCookie('refreshToken');
 
-    res.status(204).send();
+  res.status(204).send();
 };
 
 const setupSession = (res, session) => {
-    res.cookie('refreshToken', session.refreshToken, {
-        httpOnly: true,
-        expires: new Date(Date.now() + THIRTY_DAY),
-    });
-    res.cookie("sessionId", session._id, {
-        httpOnly: true,
-        expires: new Date(Date.now() + THIRTY_DAY),
-    });
+  res.cookie('refreshToken', session.refreshToken, {
+    httpOnly: true,
+    expires: new Date(Date.now() + THIRTY_DAY),
+  });
+  res.cookie('sessionId', session._id, {
+    httpOnly: true,
+    expires: new Date(Date.now() + THIRTY_DAY),
+  });
 };
 
 export const refreshUserSessionController = async (req, res) => {
-    const session = await refreshUsersSession({
-        sessionId: req.cookies.sessionId,
-        refreshToken: req.cookies.refreshToken,
-    });
+  const session = await refreshUsersSession({
+    sessionId: req.cookies.sessionId,
+    refreshToken: req.cookies.refreshToken,
+  });
 
-    setupSession(res, session);
+  setupSession(res, session);
 
-    res.json({
-        status: 200,
-        message: 'Successfully refreshed a session!',
-        data: { accessToken: session.accessToken, },
-    });
+  res.json({
+    status: 200,
+    message: 'Successfully refreshed a session!',
+    data: { accessToken: session.accessToken },
+  });
 };
 
 export const sendResetEmailController = async (req, res) => {
-    const { email } = req.body;
-    await sendResetPasswordEmail(email);
-    res.json({
-        status: 200,
-        message: 'Successfully sent reset password email!',
-        data: { email },
-    });
+  const { email } = req.body;
+  //   console.log('Received request to send reset email:', req.body);
+  await sendResetPasswordEmail(email);
+  res.json({
+    status: 200,
+    message: 'Successfully sent reset password email!',
+    data: { email },
+  });
 };
 
 export const resetPasswordController = async (req, res) => {
-    res.send('resetPasswordController');
+  res.send('resetPasswordController');
 };
