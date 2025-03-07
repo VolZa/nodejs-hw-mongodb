@@ -13,8 +13,6 @@ import { notFoundHandler } from './middlewares/notFoundHandler.js';
 
 dotenv.config();
 
-const PORT = Number(getEnv('PORT', '3000'));
-
 export const startServer = () => {
   const app = express();
   app.use(express.json());
@@ -44,6 +42,7 @@ export const startServer = () => {
   app.use('*', notFoundHandler);
   app.use(errorHandler);
 
+  const PORT = Number(getEnv('PORT', '3000'));
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
