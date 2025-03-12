@@ -12,8 +12,8 @@ import { FIFTEEN_MINUTES, THIRTY_DAY } from '../constants/index.js';
 import { TEMPLATES_DIR_PATH } from '../constants/path.js';
 import { ENV_VARS } from '../constants/env.js';
 import { SessionsCollection } from '../db/models/session.js';
-import { send } from 'process';
-import { get } from 'http';
+// import { send } from 'process';
+// import { get } from 'http';
 
 import { sendEmail } from '../utils/sendEmail.js';
 import { getEnv } from '../utils/getEnv.js';
@@ -24,6 +24,9 @@ const resetEmailTemplate = fs
     'utf-8',
   )
   .toString();
+
+//export const findUserByEmail = (email) => UsersCollection.findOne({ email });
+
 export const registerUser = async (payload) => {
   const user = await UsersCollection.findOne({ email: payload.email });
   if (user) throw createHttpError(409, 'Email in use');

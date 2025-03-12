@@ -9,6 +9,7 @@ import {
 import { serializeUser } from '../utils/serializeUser.js';
 import { THIRTY_DAY } from '../constants/index.js';
 import pkg from 'joi';
+import { setupCookies } from '../utils/setupCookies.js';
 
 const { data } = pkg;
 
@@ -25,14 +26,8 @@ export const registerUserController = async (req, res) => {
 
 export const loginUserController = async (req, res) => {
   const session = await loginUser(req.body);
-  res.cookie('refreshToken', session.refreshToken, {
-    httpOnly: true,
-    expires: new Date(Date.now() + THIRTY_DAY),
-  });
-  res.cookie('sessionId', session._id, {
-    httpOnly: true,
-    expires: new Date(Date.now() + THIRTY_DAY),
-  });
+
+  setupCookies(res, session._id, session.refreshToken);
 
   res.json({
     status: 200,
@@ -53,24 +48,13 @@ export const logoutUserController = async (req, res) => {
   res.status(204).send();
 };
 
-const setupSession = (res, session) => {
-  res.cookie('refreshToken', session.refreshToken, {
-    httpOnly: true,
-    expires: new Date(Date.now() + THIRTY_DAY),
-  });
-  res.cookie('sessionId', session._id, {
-    httpOnly: true,
-    expires: new Date(Date.now() + THIRTY_DAY),
-  });
-};
-
 export const refreshUserSessionController = async (req, res) => {
   const session = await refreshUsersSession({
     sessionId: req.cookies.sessionId,
     refreshToken: req.cookies.refreshToken,
   });
 
-  setupSession(res, session);
+  setupCookies(res, session._id, session.refreshToken);
 
   res.json({
     status: 200,
