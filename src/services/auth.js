@@ -128,4 +128,5 @@ export const sendResetPasswordEmail = async (email) => {
     subject: 'Reset Password',
     html,
   });
+  console.log('Email sent from:', getEnv(ENV_VARS.SMTP_FROM));
 };
