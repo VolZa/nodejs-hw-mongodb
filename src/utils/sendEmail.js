@@ -6,6 +6,7 @@ import createHttpError from 'http-errors';
 const transporter = nodemailer.createTransport({
   host: getEnv(ENV_VARS.SMTP_HOST),
   port: Number(getEnv(ENV_VARS.SMTP_PORT)),
+  secure: true, // 465 - secure, 587 - не secure
   auth: {
     user: getEnv(ENV_VARS.SMTP_USER),
     pass: getEnv(ENV_VARS.SMTP_PASSWORD),

@@ -17,7 +17,7 @@ import { SessionsCollection } from '../db/models/session.js';
 
 import { sendEmail } from '../utils/sendEmail.js';
 import { getEnv } from '../utils/getEnv.js';
-
+// import { link } from 'joi';
 const resetEmailTemplate = fs
   .readFileSync(
     path.join(TEMPLATES_DIR_PATH, 'reset-password-email.html'),
@@ -106,13 +106,11 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
 };
 
 export const sendResetPasswordEmail = async (email) => {
-  //   console.log('Searching user with email:', email);
   const user = await UsersCollection.findOne({ email });
-  //   console.log(user);
+
   if (!user) {
     throw createHttpError(404, 'User not found');
   }
-  const template = Handlebars.compile(resetEmailTemplate);
 
   const token = jwt.sign(
     { sub: user._id, email },
@@ -121,12 +119,40 @@ export const sendResetPasswordEmail = async (email) => {
     // (err, token) => { }
   );
 
-  const html = template({ name: user.name, token });
+  const resetPasswordLink = `${getEnv(ENV_VARS.APP_DOMAIN)}/reset-password?token=${token}`;
+  const template = Handlebars.compile(resetEmailTemplate);
+
+  const html = template({
+    name: user.name,
+    token,
+    link: resetPasswordLink,
+  });
+
   await sendEmail({
     to: email,
     from: getEnv(ENV_VARS.SMTP_FROM),
     subject: 'Reset Password',
     html,
   });
-  console.log('Email sent from:', getEnv(ENV_VARS.SMTP_FROM));
+};
+
+export const resetPassword = async ({ token, password }) => {
+  let payload;
+  try {
+    payload = jwt.verify(token, getEnv(ENV_VARS.JWT_SECRET));
+  } catch (error) {
+    console.log('Error while verifying token:', error.message);
+    throw createHttpError(401, 'JWT token is invalid or expired');
+  }
+  console.log('payload.sub =', payload.sub);
+  const user = await UsersCollection.findById(payload.sub);
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  await UsersCollection.findByIdAndUpdate(user._id, {
+    password: hashedPassword,
+  });
 };
