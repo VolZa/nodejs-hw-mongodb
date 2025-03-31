@@ -5,6 +5,7 @@ import {
   refreshUsersSession,
   registerUser,
   sendResetPasswordEmail,
+  resetPassword,
 } from '../services/auth.js';
 import { serializeUser } from '../utils/serializeUser.js';
 import { THIRTY_DAY } from '../constants/index.js';

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import express from 'express';
 import {
   loginUserSchema,
   registerUserSchema,
@@ -19,6 +20,7 @@ import {
 import { validateBody } from '../middlewares/validateBody.js';
 
 const router = Router();
+const jsonParser = express.json();
 
 router.post(
   '/register',
@@ -38,11 +40,13 @@ router.post('/logout', ctrlWrapper(logoutUserController));
 
 router.post(
   '/send-reset-email',
+  jsonParser,
   validateBody(sendResetEmailSchema),
   ctrlWrapper(sendResetEmailController),
 );
 router.post(
   '/reset-password',
+  jsonParser,
   validateBody(resetPasswordSchema),
   ctrlWrapper(resetPasswordController),
 );
