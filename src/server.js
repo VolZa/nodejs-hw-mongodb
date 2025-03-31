@@ -4,6 +4,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
+import path from 'node:path';
+
 import router from './routers/index.js';
 // import contactsRouter from './routers/contacts.js';
 
@@ -35,7 +37,7 @@ export const startServer = () => {
       message: 'Hello World!',
     });
   });
-
+  app.use('/uploads', express.static(path.resolve('src', 'uploads')));
   // app.use(contactsRouter);
   app.use(router);
 
