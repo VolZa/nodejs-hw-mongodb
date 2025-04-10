@@ -12,4 +12,6 @@ const storage = multer.diskStorage({
   },
 });
 
-export const upload = multer({ storage: storage });
+// export const upload = multer({ storage: storage });
+// Якщо назва ключа і значення однакові, то можна записати так:
+export const upload = multer({ storage });

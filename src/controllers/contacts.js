@@ -118,7 +118,30 @@ export const upsertContactController = async (req, res, next) => {
 export const patchContactController = async (req, res, next) => {
   const { contactId } = req.params;
   const userId = req.user._id.toString();
-  const result = await updateContact(contactId, req.body, userId);
+
+  let photo = null;
+  if (req.file) {
+    if (getEnv('UPLOAD_TO_CLOUDINARY') === 'true') {
+      const result = await uploadToCloudinary(req.file.path);
+      console.log('Uploading to Cloudinary: result= ', result);
+      photo = result.secure_url;
+    } else {
+      await fs.rename(
+        req.file.path,
+        path.resolve('src', 'uploads', req.file.filename),
+        (photo = `http://localhost:3000/uploads/${req.file.filename}`),
+      );
+    }
+  }
+  console.log(
+    'ContactId = ',
+    contactId,
+    ' ... req.body = ',
+    req.body,
+    ' photo =',
+    photo,
+  );
+  const result = await updateContact(contactId, { ...req.body, photo }, userId);
 
   if (!result) {
     next(createHttpError(404, 'Contact not found'));

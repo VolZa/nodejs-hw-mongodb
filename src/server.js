@@ -41,8 +41,8 @@ export const startServer = () => {
   // app.use(contactsRouter);
   app.use(router);
 
-  app.use('*', notFoundHandler);
-  app.use(errorHandler);
+  app.use('*', notFoundHandler); // 404 handler
+  app.use(errorHandler); // Error handler
 
   const PORT = Number(getEnv('PORT', '3000'));
   app.listen(PORT, () => {

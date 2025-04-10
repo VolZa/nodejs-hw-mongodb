@@ -1,4 +1,6 @@
 import { model, Schema } from 'mongoose';
+import { CATEGORIES } from '../../constants/index.js';
+
 const contactsSchema = new Schema(
   {
     name: { type: String, required: true },
@@ -8,7 +10,8 @@ const contactsSchema = new Schema(
     contactType: {
       type: String,
       required: true,
-      enum: ['work', 'home', 'personal'],
+      // enum: ['work', 'home', 'personal'],
+      enum: CATEGORIES,
       default: 'personal',
     },
     userId: {
