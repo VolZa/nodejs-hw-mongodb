@@ -13,7 +13,10 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { isValidId } from '../middlewares/isValidId.js';
 
-import { createContactShcema } from '../validation/contacts.js';
+import {
+  createContactShcema,
+  updateContactSchema,
+} from '../validation/contacts.js';
 import { updateContactValidationShema } from '../validation/updateContactValidationSchema.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import { upload } from '../middlewares/upload.js';
@@ -49,7 +52,8 @@ contactsRouter.put(
 contactsRouter.patch(
   '/:contactId',
   isValidId,
-  validateBody(createContactShcema),
+  upload.single('photo'), // Middleware to handle file upload
+  validateBody(updateContactSchema),
   ctrlWrapper(patchContactController),
 );
 
