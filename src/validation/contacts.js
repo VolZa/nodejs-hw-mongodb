@@ -11,7 +11,7 @@ export const createContactShcema = Joi.object({
   }),
   phoneNumber: Joi.string().min(3).max(20).required(),
   email: Joi.string().min(3).max(30).email(),
-  isFavorite: Joi.boolean(),
+  isFavourite: Joi.boolean(),
   contactType: Joi.string()
     .valid(...CATEGORIES)
     .required(),
@@ -21,7 +21,8 @@ export const createContactShcema = Joi.object({
     if (value && !isValidObjectId(value)) {
       return helper.message('User id should be a valid mongo id');
     }
-    return true;
+    // return true;
+    return value;
   }),
 });
 
@@ -29,7 +30,8 @@ export const updateContactSchema = Joi.object({
   name: Joi.string().min(3).max(20),
   phoneNumber: Joi.string().min(3).max(20),
   email: Joi.string().min(3).max(30).email(),
-  isFavourite: Joi.boolean(),
+  // isFavourite: Joi.boolean().truthy('true').falsy('false').default(false),
+  isFavourite: { type: Boolean, default: false },
   contactType: Joi.string().valid(...CATEGORIES),
   userId: Joi.string().custom((value, helper) => {
     //кастомна перевірка монго
@@ -45,7 +47,7 @@ const dataToValidate = {
   name: 'Sydir Петрович D',
   email: 'emka@dot.net',
   phoneNumber: '33322233',
-  isFavorite: 'true',
+  isFavourite: 'true',
   contactType: 'home',
 };
 
