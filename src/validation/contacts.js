@@ -31,7 +31,7 @@ export const updateContactSchema = Joi.object({
   phoneNumber: Joi.string().min(3).max(20),
   email: Joi.string().min(3).max(30).email(),
   // isFavourite: Joi.boolean().truthy('true').falsy('false').default(false),
-  isFavourite: { type: Boolean, default: false },
+  isFavourite: Joi.boolean(),
   contactType: Joi.string().valid(...CATEGORIES),
   userId: Joi.string().custom((value, helper) => {
     //кастомна перевірка монго
